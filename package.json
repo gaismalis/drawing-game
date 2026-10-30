@@ -1,0 +1,22 @@
+{
+  "name": "drawing-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zīmēšanas spēle ar viltniekiem — multiplayer via phones",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test/smoke.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "socket.io": "^4.8.4"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  }
+}

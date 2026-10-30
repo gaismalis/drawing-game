@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e1b4b" />
+  <title>Viltnieks zīmē</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>🎨 Viltnieks zīmē</h1>
+
+    <div id="connection" class="banner hidden">Savienojas…</div>
+
+    <!-- Sākums -->
+    <section id="screen-home" class="screen hidden">
+      <label for="name">Tavs vārds</label>
+      <input id="name" maxlength="20" autocomplete="nickname" placeholder="piem. Jānis" />
+
+      <button id="btn-create" class="primary">Izveidot spēli</button>
+
+      <div class="divider">vai</div>
+
+      <label for="code">Istabas kods</label>
+      <input id="code" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" />
+      <button id="btn-join">Pievienoties spēlei</button>
+
+      <p id="home-error" class="error"></p>
+    </section>
+
+    <!-- Istaba -->
+    <section id="screen-room" class="screen hidden">
+      <div class="room-code">
+        Istabas kods
+        <strong id="room-code"></strong>
+      </div>
+
+      <div id="round" class="hidden">
+        <p class="round-title" id="round-title"></p>
+        <button id="role-card" class="role-card" aria-live="polite">
+          <span id="role-hidden">👆 Pieskaries, lai redzētu savu lomu</span>
+          <span id="role-shown" class="hidden"></span>
+        </button>
+        <p id="round-info" class="muted"></p>
+        <div id="reveal" class="reveal hidden"></div>
+      </div>
+
+      <p id="waiting" class="muted center">Gaidām, kad admins sāks raundu…</p>
+
+      <div id="admin-controls" class="admin hidden">
+        <label for="impostors">Viltnieku skaits</label>
+        <div class="stepper">
+          <button id="imp-minus" type="button">−</button>
+          <span id="imp-count">1</span>
+          <button id="imp-plus" type="button">+</button>
+        </div>
+        <button id="btn-start" class="primary">Sākt raundu</button>
+        <button id="btn-reveal" class="hidden">Atklāt vārdu un viltniekus</button>
+        <p id="room-error" class="error"></p>
+      </div>
+
+      <h2>Spēlētāji <span id="player-count" class="muted"></span></h2>
+      <ul id="players"></ul>
+
+      <p class="muted small center" id="words-used"></p>
+      <button id="btn-leave" class="link">Pamest istabu</button>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
