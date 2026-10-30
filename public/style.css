@@ -129,3 +129,4 @@ button.link { background: none; color: #a5b4fc; text-decoration: underline; font
 .dot { width: 10px; height: 10px; border-radius: 50%; background: #22c55e; flex: none; }
 .offline .dot { background: #64748b; }
 .admin .error { margin: 8px 0 0; min-height: 0; }
+.greeting { text-align: center; font-size: 1.2rem; margin: 8px 0 4px; }

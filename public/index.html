@@ -16,16 +16,28 @@
 
     <!-- Sākums -->
     <section id="screen-home" class="screen hidden">
-      <label for="name">Tavs vārds</label>
-      <input id="name" maxlength="20" autocomplete="nickname" placeholder="piem. Jānis" />
+      <!-- 1. solis: vārds -->
+      <form id="step-name">
+        <label for="name">Tavs vārds</label>
+        <input id="name" maxlength="20" autocomplete="nickname" placeholder="piem. Jānis" />
+        <button type="submit" class="primary">Tālāk</button>
+      </form>
 
-      <button id="btn-create" class="primary">Izveidot spēli</button>
+      <!-- 2. solis: izveidot vai pievienoties -->
+      <div id="step-choice" class="hidden">
+        <p class="greeting">Sveiks, <strong id="greeting-name"></strong>!</p>
+        <button id="btn-create" class="primary">Izveidot spēli</button>
+        <button id="btn-show-join">Pievienoties spēlei</button>
+        <button class="link btn-change-name">Mainīt vārdu</button>
+      </div>
 
-      <div class="divider">vai</div>
-
-      <label for="code">Istabas kods</label>
-      <input id="code" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" />
-      <button id="btn-join">Pievienoties spēlei</button>
+      <!-- 3. solis: istabas kods -->
+      <form id="step-join" class="hidden">
+        <label for="code">Istabas kods</label>
+        <input id="code" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="1234" autocomplete="off" />
+        <button type="submit" class="primary">Pievienoties</button>
+        <button type="button" id="btn-back" class="link">Atpakaļ</button>
+      </form>
 
       <p id="home-error" class="error"></p>
     </section>

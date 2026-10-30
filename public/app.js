@@ -32,6 +32,7 @@ function show(screen) {
 function goHome(message = '') {
   saveSession(null);
   state = null;
+  setStep(savedName() ? 'choice' : 'name');
   $('home-error').textContent = message;
   show('home');
 }
@@ -72,18 +73,44 @@ socket.on('replaced', () => {
 
 // ---------- Home ----------
 
-$('name').value = localStorage.getItem(NAME_KEY) || '';
 const urlCode = new URLSearchParams(location.search).get('code');
 if (urlCode) $('code').value = urlCode;
 
-function enterRoom(event, payload) {
-  const name = $('name').value.trim();
+// Home is a small wizard: name -> host or join -> (join) room code.
+function setStep(step) {
+  for (const s of ['name', 'choice', 'join']) $(`step-${s}`).classList.toggle('hidden', s !== step);
+  $('home-error').textContent = '';
+  if (step === 'name') $('name').focus();
+  if (step === 'join') $('code').focus();
+}
+
+function savedName() {
+  return localStorage.getItem(NAME_KEY) || '';
+}
+
+$('name').value = savedName();
+$('greeting-name').textContent = savedName();
+setStep(savedName() ? 'choice' : 'name');
+
+$('step-name').onsubmit = (e) => {
+  e.preventDefault();
+  const name = $('name').value.trim().replace(/\s+/g, ' ');
   if (!name) {
     $('home-error').textContent = 'Ievadi savu vārdu';
     return;
   }
   localStorage.setItem(NAME_KEY, name);
-  socket.emit(event, { ...payload, name }, (res) => {
+  $('greeting-name').textContent = name;
+  setStep(urlCode ? 'join' : 'choice');
+};
+
+document.querySelector('.btn-change-name').onclick = () => setStep('name');
+$('btn-show-join').onclick = () => setStep('join');
+$('btn-back').onclick = () => setStep('choice');
+$('code').oninput = () => ($('home-error').textContent = '');
+
+function enterRoom(event, payload) {
+  socket.emit(event, { ...payload, name: savedName() }, (res) => {
     if (res.error) {
       $('home-error').textContent = res.error;
       return;
@@ -94,7 +121,8 @@ function enterRoom(event, payload) {
 }
 
 $('btn-create').onclick = () => enterRoom('create', {});
-$('btn-join').onclick = () => {
+$('step-join').onsubmit = (e) => {
+  e.preventDefault();
   const code = $('code').value.trim();
   if (!/^\d{4}$/.test(code)) {
     $('home-error').textContent = 'Kodam jābūt 4 cipariem';
@@ -102,7 +130,6 @@ $('btn-join').onclick = () => {
   }
   enterRoom('join', { code });
 };
-$('code').addEventListener('keydown', (e) => e.key === 'Enter' && $('btn-join').click());
 
 // ---------- Room ----------
 
